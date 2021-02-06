@@ -11,6 +11,23 @@ namespace ConsoleUI
         {
             //ProductCalismasi();
 
+            //CategoryTest();
+
+            //ProductJoinislem();
+
+        }
+
+        private static void ProductJoinislem()
+        {
+            ProductManager productManager = new ProductManager(new EfProductDal());
+            foreach (var item in productManager.GetProductDetails())
+            {
+                Console.WriteLine(item.ProductId + "/" + item.ProductName + "/" + item.CategoryName + "/" + item.UnitsInStock);
+            }
+        }
+
+        private static void CategoryTest()
+        {
             CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
             foreach (var category in categoryManager.GetAll())
             {
@@ -20,10 +37,6 @@ namespace ConsoleUI
             CategoryManager categoryManager1 = new CategoryManager(new EfCategoryDal());
             var category1 = categoryManager1.GetById(3);
             Console.WriteLine(category1.CategoryName);
-
-
-
-
         }
 
         private static void ProductCalismasi()
