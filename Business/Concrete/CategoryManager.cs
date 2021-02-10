@@ -18,12 +18,14 @@ namespace Business.Concrete
 
         public List<Category> GetAll()
         {
+            //İş kodları
             return _categoryDal.GetAll();
         }
 
-        public Category GetById(int CategoryId)
+        //Select * from Categories where CategoryId = 3
+        public Category GetById(int categoryId)
         {
-            return _categoryDal.Get(c => c.CategoryId == CategoryId);
+            return _categoryDal.Get(c=>c.CategoryId == categoryId);
         }
     }
 }
