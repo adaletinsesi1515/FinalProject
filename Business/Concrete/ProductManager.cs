@@ -7,7 +7,13 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcers.Validation;
+using FluentValidation;
+using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
 namespace Business.Concrete
 {
@@ -20,15 +26,17 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
             //business codes
+            //validation codes - Doğrulama kodu
 
-            if (product.ProductName.Length<2)
-            {
-                //magic strings
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
+
+            //Validasyon kodu -- Core katmanından çağırıyoruz
+            ValidationTool.Validate(new ProductValidator(), product);
+
+
             _productDal.Add(product);
 
             return new SuccessResult(Messages.ProductAdded);
