@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Business.CCS;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcers.Validation;
@@ -20,10 +21,11 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-
-        public ProductManager(IProductDal productDal)
+        ILogger _logger;
+        public ProductManager(IProductDal productDal, ILogger logger)
         {
             _productDal = productDal;
+            _logger = logger;
         }
 
         [ValidationAspect(typeof(ProductValidator))]
@@ -34,12 +36,13 @@ namespace Business.Concrete
 
 
             //Validasyon kodu -- Core katmanından çağırıyoruz
-            ValidationTool.Validate(new ProductValidator(), product);
+            //ValidationTool.Validate(new ProductValidator(), product);
 
+                _productDal.Add(product);
 
-            _productDal.Add(product);
+                return new SuccessResult(Messages.ProductAdded);
+        
 
-            return new SuccessResult(Messages.ProductAdded);
         }
 
         public IDataResult<List<Product>> GetAll()
